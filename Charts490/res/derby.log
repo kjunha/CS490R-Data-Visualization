@@ -1,0 +1,19 @@
+----------------------------------------------------------------
+Mon Jan 27 10:38:58 HST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.1.3 - (1853019): instance a816c00e-016f-e8ba-8f57-0000034b7058 
+on database directory /Users/dexterkim/IdeaProjects/CS 490R DV/Charts490/res/roster2012 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@277050dc 
+Loaded from file:/usr/local/opt/Apache/db-derby-10.15.1.3-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=11.0.4+10-LTS
+user.dir=/Users/dexterkim/IdeaProjects/CS 490R DV/Charts490/res
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.6
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Jan 27 10:39:53 HST 2020: Shutting down Derby engine
+----------------------------------------------------------------
+Mon Jan 27 10:39:53 HST 2020:
+Shutting down instance a816c00e-016f-e8ba-8f57-0000034b7058 on database directory /Users/dexterkim/IdeaProjects/CS 490R DV/Charts490/res/roster2012 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@277050dc 
+----------------------------------------------------------------

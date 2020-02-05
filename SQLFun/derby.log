@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Jan 22 21:31:51 HST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.1.3 - (1853019): instance a816c00e-016f-d150-7d29-000003aeae00 
+on database directory /Users/dexterkim/IdeaProjects/CS 490R DV/SQLFun/src/cs490R with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@77556fd 
+Loaded from file:/usr/local/opt/Apache/db-derby-10.15.1.3-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=11.0.4+10-LTS
+user.dir=/Users/dexterkim/IdeaProjects/CS 490R DV/SQLFun
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.6
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
