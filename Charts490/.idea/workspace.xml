@@ -2,6 +2,97 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9e4f1c68-4f01-4b21-a289-4e533681801e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/ScatterPlot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/README_DO_NOT_TOUCH_FILES.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/db.lck" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/dbex.lck" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/log/README_DO_NOT_TOUCH_FILES.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/log/log.ctrl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/log/log1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/log/logmirror.ctrl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/README_DO_NOT_TOUCH_FILES.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c10.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c101.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c111.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c121.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c130.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c141.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c150.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c161.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c171.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c180.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c191.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c1a1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c1b1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c1c0.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c1d1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c1e0.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c1f1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c20.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c200.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c211.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c221.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c230.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c241.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c251.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c260.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c271.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c281.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c290.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c2a1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c2b1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c2c1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c2d0.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c2e1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c2f0.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c300.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c31.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c311.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c321.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c331.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c340.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c351.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c361.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c371.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c380.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c391.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c3a1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c3b1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c3c0.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c3d1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c3e1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c3f1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c400.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c41.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c411.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c421.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c430.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c441.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c451.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c461.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c470.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c481.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c490.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c51.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c60.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c71.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c81.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/c90.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/ca1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/cb1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/cc0.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/cd1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/ce1.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/seg0/cf0.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/service.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/src/GUI/ChartPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/src/GUI/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/src/GUI/OrderMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ScatterPlot/src/model/DBConnectManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,6 +115,7 @@
   <component name="ProjectId" id="1WlVspmqhIWoZwOegcWQnkPWXIh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -79,7 +171,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
