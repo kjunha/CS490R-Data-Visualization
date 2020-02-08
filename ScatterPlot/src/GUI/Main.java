@@ -42,12 +42,13 @@ public class Main extends JFrame {
         JMenuItem y10 = new JMenuItem("10");
         JMenuItem y16 = new JMenuItem("16");
         JMenuItem y30 = new JMenuItem("30");
-        JMenu color = new JMenu("Color");
-        JMenuItem red = new JMenuItem("RED");
-        JMenuItem blue = new JMenuItem("BLUE");
-        JMenuItem green = new JMenuItem("GREEN");
+//        JMenu color = new JMenu("Color");
+//        JMenuItem red = new JMenuItem("RED");
+//        JMenuItem blue = new JMenuItem("BLUE");
+//        JMenuItem green = new JMenuItem("GREEN");
         JCheckBoxMenuItem exactValue = new JCheckBoxMenuItem("Show Exact Values", false);
-        JCheckBoxMenuItem revealGender = new JCheckBoxMenuItem("Show Gender Values", false);
+        JCheckBoxMenuItem revealGender = new JCheckBoxMenuItem("Show Gender Information", false);
+        JMenuItem reset = new JMenuItem("Reset Zoom");
 
         JMenu order = new JMenu("Order");
 //        JMenuItem ascending = new JMenuItem("Ascending");
@@ -71,7 +72,8 @@ public class Main extends JFrame {
         y16.addActionListener(e -> {contents.setScaleCount(16);});
         y30.addActionListener(e -> {contents.setScaleCount(30);});
         exactValue.addItemListener(e -> {contents.showExactValue(exactValue.getState());});
-        revealGender.addItemListener(e -> {});
+        revealGender.addItemListener(e -> {contents.showGenderInfo(revealGender.getState());});
+        reset.addActionListener(e -> {contents.resetToOriginal();});
 //        ascending.addActionListener(e -> {contents.setOrderBy(OrderMode.ASCD);});
 //        decending.addActionListener(e -> {contents.setOrderBy(OrderMode.DESC);});
 
@@ -90,6 +92,7 @@ public class Main extends JFrame {
         menuBar.add(view).add(xy_scale).add(y1);
         view.add(exactValue);
         view.add(revealGender);
+        view.add(reset);
         xy_scale.add(y5);xy_scale.add(y8);xy_scale.add(y10);xy_scale.add(y16);xy_scale.add(y30);
 //        ymetric.add(bygap);
 //        menuBar.add(order).add(ascending);

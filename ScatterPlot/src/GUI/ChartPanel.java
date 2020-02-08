@@ -4,9 +4,14 @@ import model.DBConnectManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 
-public class ChartPanel extends JPanel {
+public class ChartPanel extends JPanel implements MouseListener, MouseMotionListener {
     //Singleton for Chart Panel
     private static ChartPanel chartPanel;
     private DBConnectManager dbManager;
@@ -18,9 +23,21 @@ public class ChartPanel extends JPanel {
     private double right;
     private double top;
     private double bottom;
-    private double barWidth;
     private String x_name;
     private String y_name;
+    private Point min;
+    private boolean showGender;
+
+    //mouse listener related field
+    private Rectangle2D.Double box;
+    private Point mouseDownPoint;
+    private Point mouseUpPoint;
+    private boolean showBox;
+    private boolean isZoom;
+
+    //tooltip related field
+    private boolean showTooltip;
+    private ToolTipManager ttm;
 
     //user interaction fields
     private int scaleCount;
@@ -34,9 +51,20 @@ public class ChartPanel extends JPanel {
         x_name = "CREDITS_APPLIED";
         y_name = "CREDITS_PASSED";
         dbManager.requestDB(x_name, y_name);
-        barWidth = 0.7;
         scaleCount = 10;
         color = new Color(109, 195, 209);
+        box = new Rectangle2D.Double();
+        isZoom = false;
+        min = new Point(0,0);
+        ttm = ToolTipManager.sharedInstance();
+        ttm.setInitialDelay(0);
+        ttm.setDismissDelay(10000);
+        showTooltip = false;
+        showGender = false;
+
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
     public static ChartPanel getInstance(){
@@ -53,12 +81,35 @@ public class ChartPanel extends JPanel {
         double w = getWidth();
         drawAxis(g, w, h, scaleCount);
         for(int i = 0; i < dbManager.getSize(); i++) {
-            drawPlot(g, chartWidthResolution*(dbManager.getXin(i)/dbManager.getXMax())+top, chartHeightResolution*(dbManager.getYin(i)/dbManager.getYMax())+left, 5);
+            if(showGender) {
+                if(dbManager.getGenderin(i).equals("F")) {
+                    drawPlot(g,
+                            left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
+                            bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
+                            5,
+                            Color.RED);
+                } else {
+                    drawPlot(g,
+                            left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
+                            bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
+                            5,
+                            Color.BLUE);
+                }
+            } else {
+                drawPlot(g,
+                        left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
+                        bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
+                        5,
+                        Color.GREEN);
+            }
         }
+        g.setColor(Color.BLUE);
+        if(showBox) { g.draw(box); }
+
     }
 
-    private void drawPlot(Graphics2D g, double cx, double cy, int r) {
-        g.setColor(Color.GREEN);
+    private void drawPlot(Graphics2D g, double cx, double cy, int r, Color c) {
+        g.setColor(c);
         g.fillOval((int)(cx-r/2), (int)(cy-r/2), r, r);
     }
 
@@ -76,15 +127,15 @@ public class ChartPanel extends JPanel {
         g.setColor(Color.BLACK);
         g.drawLine((int)left, (int)top, (int)left, (int)bottom);
         g.drawLine((int)left, (int)bottom, (int)right, (int)bottom);
-        g.drawString(x_name, (int)(right-x_name.length()*3), (int)(bottom+bottom_index)+10);
+        g.drawString(x_name, (int)(right-x_name.length()*3), (int)(bottom+bottom_index)+13);
         g.drawString(y_name, (int)(left_index-(y_name.length()/2)*3), (int)top-10);
         for(int i = 1; i <= pts; i++) {
             double xmark = left+i*(chartWidthResolution/pts);
             double ymark = bottom-i*(chartHeightResolution/pts);
             g.drawLine((int)xmark, (int)bottom - 3, (int)xmark, (int)bottom + 3);
             g.drawLine((int)left - 3, (int)ymark, (int)left+3, (int)ymark);
-            g.drawString(df.format((dbManager.getYMax()/pts)*i),(int)left_index, (int)ymark+5);
-            g.drawString(df.format((dbManager.getXMax()/pts)*i), (int)xmark+5, (int)(bottom+bottom_index));
+            g.drawString(df.format(min.y+((dbManager.getYMax()-min.y)/pts)*i),(int)left_index, (int)ymark+5);
+            g.drawString(df.format(min.x+((dbManager.getXMax()-min.x)/pts)*i), (int)xmark+5, (int)(bottom+bottom_index));
         }
     }
 
@@ -92,6 +143,7 @@ public class ChartPanel extends JPanel {
     public void getCreditsAttempted_CreditsPassed(){
         x_name = "credits_applied";
         y_name = "credits_passed";
+        min.setLocation(0,0);
         dbManager.requestDB(x_name,y_name);
         repaint();
     }
@@ -99,6 +151,7 @@ public class ChartPanel extends JPanel {
     public void getCreditsAttempted_GPA(){
         x_name = "credits_applied";
         y_name = "gpa";
+        min.setLocation(0,0);
         dbManager.requestDB(x_name,y_name);
         repaint();
 
@@ -106,6 +159,7 @@ public class ChartPanel extends JPanel {
     public void getCreditsPassed_GPA(){
         x_name = "credits_passed";
         y_name = "gpa";
+        min.setLocation(0,0);
         dbManager.requestDB(x_name,y_name);
         repaint();
     }
@@ -113,6 +167,7 @@ public class ChartPanel extends JPanel {
     public void getAge_GPA() {
         x_name = "age";
         y_name = "gpa";
+        min.setLocation(0,0);
         dbManager.requestDB(x_name,y_name);
         repaint();
     }
@@ -120,6 +175,7 @@ public class ChartPanel extends JPanel {
     public void getAge_CurrentCredits() {
         x_name = "age";
         y_name = "current_credits";
+        min.setLocation(0,0);
         dbManager.requestDB(x_name,y_name);
         repaint();
     }
@@ -130,7 +186,82 @@ public class ChartPanel extends JPanel {
     }
 
     public void showExactValue(boolean toggle) {
-
+        this.showTooltip = toggle;
         repaint();
     }
+
+    public void showGenderInfo(boolean toggle) {
+        this.showGender = toggle;
+        repaint();
+    }
+
+    public void resetToOriginal() {
+        dbManager.resetFrame();
+        min.setLocation(0,0);
+        repaint();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        mouseDownPoint = new Point(x,y);
+        showBox = true;
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        showBox = false;
+        if(isZoom) {
+            double maxX = (mouseDownPoint.x < mouseUpPoint.x)?mouseUpPoint.x:mouseDownPoint.x;
+            double minX = (mouseDownPoint.x < mouseUpPoint.x)?mouseDownPoint.x:mouseUpPoint.x;
+            double maxY = (mouseDownPoint.y < mouseUpPoint.y)?mouseUpPoint.y:mouseDownPoint.y;
+            double minY = (mouseDownPoint.y < mouseUpPoint.y)?mouseDownPoint.y:mouseUpPoint.y;
+            dbManager.updateFrame(
+                    (minX - left)/chartWidthResolution*(dbManager.getXMax()-min.x)+min.x,
+                    (bottom - maxY)/chartHeightResolution*(dbManager.getYMax()-min.y)+min.y,
+                    (maxX - left)/chartWidthResolution*(dbManager.getXMax()-min.x)+min.x,
+                    (bottom - minY)/chartHeightResolution*(dbManager.getYMax()-min.y)+min.y
+                    );
+        }
+        min.setLocation(dbManager.getXMin(), dbManager.getYMin());
+        isZoom = false;
+        repaint();
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        mouseUpPoint = new Point();
+        isZoom = true;
+        mouseUpPoint.x = e.getX();
+        mouseUpPoint.y = e.getY();
+        box.setFrameFromDiagonal(mouseDownPoint.x, mouseDownPoint.y, mouseUpPoint.x, mouseUpPoint.y);
+        repaint();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if(showTooltip) {
+            int x = e.getX();
+            int y = e.getY();
+            for(int i = 0; i < dbManager.getSize(); i++) {
+                int xval = (int)(left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)));
+                int yval = (int)(bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)));
+                if((xval-3 < x & x < xval+3)&&(yval-3 < y & y < yval+3)) {
+                    setToolTipText(x_name + ": " + dbManager.getXin(i) + ", "+ y_name + ": " + dbManager.getYin(i) + ((showGender)?", Gender: " + dbManager.getGenderin(i):""));
+                    break;
+                } else {
+                    setToolTipText(null);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) { }
+    @Override
+    public void mouseEntered(MouseEvent e) { }
+    @Override
+    public void mouseExited(MouseEvent e) { }
 }
