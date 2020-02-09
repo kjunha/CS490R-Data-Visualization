@@ -92,8 +92,7 @@ public class DBConnectManager {
     public double getYMax(){ return (getSize()==0)?1.0:Collections.max(points.stream().map(y->y.getY()).collect(Collectors.toList())); }
     public double getXMin(){ return (getSize()==0)?0.0:Collections.min(points.stream().map(x->x.getX()).collect(Collectors.toList())); }
     public double getYMin(){ return (getSize()==0)?0.0:Collections.min(points.stream().map(y->y.getY()).collect(Collectors.toList())); }
-    public int getSize(){
-        return points.size();
-    }
+    public int getSize(){ return points.size(); }
+    public int getDBSize(){ return x_raw.size(); }
 
 }

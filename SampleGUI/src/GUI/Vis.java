@@ -24,16 +24,13 @@ public class Vis extends JPanel {
         background = Color.WHITE;
         showbox = false;
         boxPoint = new Point(500,500);
-        timer = new Timer(50, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(dir < 0.5) {
-                    boxPoint.setLocation(boxPoint.getX() + 5, boxPoint.getY() + 5);
-                } else {
-                    boxPoint.setLocation(boxPoint.getX() - 5, boxPoint.getY() - 5);
-                }
-                repaint();
+        timer = new Timer(50, e -> {
+            if(dir < 0.5) {
+                boxPoint.setLocation(boxPoint.getX() + 5, boxPoint.getY() + 5);
+            } else {
+                boxPoint.setLocation(boxPoint.getX() - 5, boxPoint.getY() - 5);
             }
+            repaint();
         });
     }
 

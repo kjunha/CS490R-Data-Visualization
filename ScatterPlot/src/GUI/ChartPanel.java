@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Point2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 
@@ -45,6 +45,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
 
     //Other fields
     private static final DecimalFormat df = new DecimalFormat("#.#");
+    private Timer boxAction;
 
     private ChartPanel() {
         dbManager = DBConnectManager.getInstance();
@@ -65,6 +66,14 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
 
         addMouseListener(this);
         addMouseMotionListener(this);
+
+        boxAction = new Timer(50, e -> {
+            double maxX = (mouseDownPoint.x < mouseUpPoint.x)?mouseUpPoint.x:mouseDownPoint.x;
+            double minX = (mouseDownPoint.x < mouseUpPoint.x)?mouseDownPoint.x:mouseUpPoint.x;
+            double maxY = (mouseDownPoint.y < mouseUpPoint.y)?mouseUpPoint.y:mouseDownPoint.y;
+            double minY = (mouseDownPoint.y < mouseUpPoint.y)?mouseDownPoint.y:mouseUpPoint.y;
+
+        });
     }
 
     public static ChartPanel getInstance(){
@@ -86,25 +95,27 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                     drawPlot(g,
                             left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
                             bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
-                            5,
+                            6,
                             Color.RED);
                 } else {
                     drawPlot(g,
                             left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
                             bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
-                            5,
+                            6,
                             Color.BLUE);
                 }
             } else {
                 drawPlot(g,
                         left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
                         bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
-                        5,
+                        6,
                         Color.GREEN);
             }
         }
         g.setColor(Color.BLUE);
-        if(showBox) { g.draw(box); }
+        if(showBox) {
+            g.draw(box);
+        }
 
     }
 
@@ -115,7 +126,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
 
     //TODO add color parameter
 
-    private void drawAxis(Graphics g, double w, double h, int pts) {
+    private void drawAxis(Graphics2D g, double w, double h, int pts) {
         left = (w*0.1<1)?10:(w*0.1);
         right = w - left;
         top = (h*0.1<1)?10:(h*0.1);
@@ -127,15 +138,18 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         g.setColor(Color.BLACK);
         g.drawLine((int)left, (int)top, (int)left, (int)bottom);
         g.drawLine((int)left, (int)bottom, (int)right, (int)bottom);
-        g.drawString(x_name, (int)(right-x_name.length()*3), (int)(bottom+bottom_index)+13);
-        g.drawString(y_name, (int)(left_index-(y_name.length()/2)*3), (int)top-10);
+        g.drawString(x_name, (int)(right-x_name.length()*7), (int)(bottom+bottom_index)+13);
+        g.rotate(-Math.PI/2, (left-left_index)-10, (int)(top+y_name.length()*7));
+        g.drawString(y_name, (int)(left-left_index)-10, (int)(top+y_name.length()*7));
+        g.rotate(Math.PI/2,(left-left_index)-10, (int)(top+y_name.length()*7));
         for(int i = 1; i <= pts; i++) {
             double xmark = left+i*(chartWidthResolution/pts);
             double ymark = bottom-i*(chartHeightResolution/pts);
             g.drawLine((int)xmark, (int)bottom - 3, (int)xmark, (int)bottom + 3);
             g.drawLine((int)left - 3, (int)ymark, (int)left+3, (int)ymark);
             g.drawString(df.format(min.y+((dbManager.getYMax()-min.y)/pts)*i),(int)left_index, (int)ymark+5);
-            g.drawString(df.format(min.x+((dbManager.getXMax()-min.x)/pts)*i), (int)xmark+5, (int)(bottom+bottom_index));
+            String xs;
+            g.drawString(xs = df.format(min.x+((dbManager.getXMax()-min.x)/pts)*i), (int)xmark-(xs.length()/2)*7, (int)(bottom+bottom_index));
         }
     }
 
@@ -212,12 +226,16 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        showBox = false;
         if(isZoom) {
             double maxX = (mouseDownPoint.x < mouseUpPoint.x)?mouseUpPoint.x:mouseDownPoint.x;
             double minX = (mouseDownPoint.x < mouseUpPoint.x)?mouseDownPoint.x:mouseUpPoint.x;
             double maxY = (mouseDownPoint.y < mouseUpPoint.y)?mouseUpPoint.y:mouseDownPoint.y;
             double minY = (mouseDownPoint.y < mouseUpPoint.y)?mouseDownPoint.y:mouseUpPoint.y;
+            for(int i = 0; i < 30; i++) {
+                box.setFrameFromDiagonal(minX-((minX-left)/30*i),minY-((minY-top)/30*i),maxX+((right-maxX)/30*i),maxY+((bottom-maxY)/30*i));
+                paintImmediately((int)(top*0.8), (int)(left*0.8), (int)(chartWidthResolution*1.2), (int)(chartHeightResolution*1.2));
+                try { Thread.sleep(3); } catch (InterruptedException ex) { ex.printStackTrace(); }
+            }
             dbManager.updateFrame(
                     (minX - left)/chartWidthResolution*(dbManager.getXMax()-min.x)+min.x,
                     (bottom - maxY)/chartHeightResolution*(dbManager.getYMax()-min.y)+min.y,
@@ -225,8 +243,10 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                     (bottom - minY)/chartHeightResolution*(dbManager.getYMax()-min.y)+min.y
                     );
         }
+        showBox = false;
         min.setLocation(dbManager.getXMin(), dbManager.getYMin());
         isZoom = false;
+        boxAction.stop();
         repaint();
     }
 
@@ -248,7 +268,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
             for(int i = 0; i < dbManager.getSize(); i++) {
                 int xval = (int)(left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)));
                 int yval = (int)(bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)));
-                if((xval-3 < x & x < xval+3)&&(yval-3 < y & y < yval+3)) {
+                if((xval-4 < x & x < xval+4)&&(yval-4 < y & y < yval+4)) {
                     setToolTipText(x_name + ": " + dbManager.getXin(i) + ", "+ y_name + ": " + dbManager.getYin(i) + ((showGender)?", Gender: " + dbManager.getGenderin(i):""));
                     break;
                 } else {
