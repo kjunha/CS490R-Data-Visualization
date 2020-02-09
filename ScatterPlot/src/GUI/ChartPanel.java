@@ -96,24 +96,26 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                             left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
                             bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
                             6,
-                            Color.RED);
+                            new Color(235, 12, 49));
                 } else {
                     drawPlot(g,
                             left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
                             bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
                             6,
-                            Color.BLUE);
+                            new Color(25, 67, 194));
                 }
             } else {
                 drawPlot(g,
                         left + chartWidthResolution*((dbManager.getXin(i)-min.x)/(dbManager.getXMax()-min.x)),
                         bottom - chartHeightResolution*((dbManager.getYin(i)-min.y)/(dbManager.getYMax()-min.y)),
                         6,
-                        Color.GREEN);
+                        new Color(85, 85, 85));
             }
         }
-        g.setColor(Color.BLUE);
         if(showBox) {
+            g.setColor(new Color(139, 176, 194, 70));
+            g.fill(box);
+            g.setColor(Color.WHITE);
             g.draw(box);
         }
 
