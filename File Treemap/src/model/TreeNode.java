@@ -1,36 +1,25 @@
 package model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode {
-    private String fileName;
-    private double fileSize;
+    private File file;
     private List<TreeNode> subStructure;
-    private boolean isFile;
-    private String extention;
+    private String extension;
 
     public TreeNode() {
         subStructure = new ArrayList<>();
     }
 
-    public TreeNode setName(String name) {
-        this.fileName = name;
+    public TreeNode setFile(File file) {
+        this.file = file;
         return this;
     }
 
-    public TreeNode setSize(double size) {
-        this.fileSize = size;
-        return this;
-    }
-
-    public TreeNode setisFile(boolean b) {
-        this.isFile = b;
-        return this;
-    }
-
-    public TreeNode setExtention(String s) {
-        extention = s;
+    public TreeNode setExtension(String s) {
+        extension = s;
         return this;
     }
 
@@ -46,21 +35,17 @@ public class TreeNode {
         subStructure.add(tn);
     }
 
-    public String getFileName() {
-        return this.fileName;
+    public File getFile() {
+        return this.file;
     }
 
-    public boolean getIsFile() {
-        return this.isFile;
-    }
-
-    public String getExtention() {
-        return this.extention;
+    public String getExtension() {
+        return this.extension;
     }
 
     public double getFileSize() {
-        if (isFile) {
-            return this.fileSize;
+        if (file.isFile()) {
+            return this.file.length();
         } else {
             double fs = 0;
             for(int i = 0; i < subStructure.size(); i++) {

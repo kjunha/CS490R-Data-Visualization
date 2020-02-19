@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,23 +21,34 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
     //TreeMap object related field
     private TreeMap treeMap;
     private List<Rectangle2D> boxStructure;
+    private List<String> fileExtentions;
     private HashMap<String, Color> colorMap;
 
     //Draw box field
     boolean isHorizontalSplit; //true when the rectangle splits horizontally.
 
+    //Color Scheme indicator
+    private ColorSchemeType colorSchemeType;
+
     //tooltip related field
     private boolean showTooltip;
     private ToolTipManager ttm;
+    private List<String> tooltipInfo;
 
     //Other fields
     private static final DecimalFormat df = new DecimalFormat("#.#");
     private Timer boxAction;
+    private JFileChooser chooser;
+
 
     private ChartPanel() {
         treeMap = TreeMap.getInstance();
         boxStructure = new ArrayList<>();
+        fileExtentions = new ArrayList<>();
+        colorMap = new HashMap<>();
+        tooltipInfo = new ArrayList<>();
         isHorizontalSplit = true;
+        colorSchemeType = ColorSchemeType.BY_EXTENSION;
         ttm = ToolTipManager.sharedInstance();
         ttm.setInitialDelay(0);
         ttm.setDismissDelay(10000);
@@ -62,9 +72,23 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         double w = getWidth();
         buildStructure(0,0,w,h,true,treeMap.getRoot());
         for(int i = 0; i < boxStructure.size(); i++) {
-            g.setColor(Color.BLUE);
-            g.fill(boxStructure.get(i));
-            g.setColor(Color.GREEN);
+            switch (colorSchemeType) {
+                case BY_EXTENSION:
+                    g.setColor(colorMap.get(fileExtentions.get(i)));
+                    g.fill(boxStructure.get(i));
+                    break;
+                case RANDOM:
+                    g.setColor(Color.getHSBColor((float)Math.random(),0.7f,0.7f));
+                    g.fill(boxStructure.get(i));
+                    break;
+                case NONE:
+                    break;
+                default:
+                    g.setColor(colorMap.get(fileExtentions.get(i)));
+                    g.fill(boxStructure.get(i));
+                    break;
+            }
+            g.setColor(Color.LIGHT_GRAY);
             g.draw(boxStructure.get(i));
         }
     }
@@ -79,8 +103,13 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
      * @param tn tree node to start with
      */
     public void buildStructure(double left, double top, double width, double height, boolean h_or_v, TreeNode tn) {
-        if(tn.getIsFile()) {
+        if(tn.getFile().isFile()) {
             boxStructure.add(new Rectangle2D.Double(left,top,width,height));
+            fileExtentions.add(tn.getExtension());
+            tooltipInfo.add(tn.getFile().toString() + " (Size: " + df.format(tn.getFileSize()/1024) + " kb)");
+            if(!colorMap.keySet().contains(tn.getExtension())) {
+                colorMap.put(tn.getExtension(), Color.getHSBColor((float)Math.random(), 0.7f, 0.7f));
+            }
         } else {
             if (h_or_v) {
                 double x_position = left;
@@ -99,7 +128,25 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
 
     }
 
-    public void build
+    public void chooseAFile() {
+        boxStructure.clear();
+        fileExtentions.clear();
+        tooltipInfo.clear();
+        chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("Choose a file");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            treeMap.resetRootDir(chooser.getSelectedFile().toString());
+        }
+        repaint();
+    }
+
+    public void setColorSchemeType(ColorSchemeType ct) {
+        this.colorSchemeType = ct;
+        repaint();
+    }
 
 
 
@@ -121,7 +168,16 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        double x = e.getX();
+        double y = e.getY();
+        for(int i = 0; i < boxStructure.size(); i++) {
+            if(boxStructure.get(i).contains(x,y)) {
+                setToolTipText(tooltipInfo.get(i));
+                break;
+            } else {
+                setToolTipText(null);
+            }
+        }
     }
 
     @Override
