@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5942e040-01c5-4021-8b9c-fc788cd4291f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SampleGUI/GUI/Vis$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SampleGUI/GUI/Vis.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SampleGUI/GUI/Vis.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/Vis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Vis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ScatterPlot/out/production/ScatterPlot/GUI/ChartPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ScatterPlot/out/production/ScatterPlot/GUI/ChartPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/../ScatterPlot/res/withage2012/db.lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ScatterPlot/src/GUI/ChartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ScatterPlot/src/GUI/ChartPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../File Treemap/src/model/TreeMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/../File Treemap/src/model/TreeMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SQLFun/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SQLFun/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +88,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
