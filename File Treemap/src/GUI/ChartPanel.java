@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,7 +23,9 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
     private TreeMap treeMap;
     private List<Rectangle2D> boxStructure;
     private List<String> fileExtentions;
-    private HashMap<String, Color> colorMap;
+    private HashMap<String, Color> colorMapByExtension;
+    private List<Color> colorDegreeByAge;
+    private List<Long> fileModifiedTimes;
 
     //Draw box field
     boolean isHorizontalSplit; //true when the rectangle splits horizontally.
@@ -45,9 +48,11 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         treeMap = TreeMap.getInstance();
         boxStructure = new ArrayList<>();
         fileExtentions = new ArrayList<>();
-        colorMap = new HashMap<>();
+        colorMapByExtension = new HashMap<>();
         tooltipInfo = new ArrayList<>();
         isHorizontalSplit = true;
+        colorDegreeByAge = new ArrayList<>();
+        fileModifiedTimes = new ArrayList<>();
         colorSchemeType = ColorSchemeType.BY_EXTENSION;
         ttm = ToolTipManager.sharedInstance();
         ttm.setInitialDelay(0);
@@ -74,18 +79,18 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         for(int i = 0; i < boxStructure.size(); i++) {
             switch (colorSchemeType) {
                 case BY_EXTENSION:
-                    g.setColor(colorMap.get(fileExtentions.get(i)));
+                    g.setColor(colorMapByExtension.get(fileExtentions.get(i)));
                     g.fill(boxStructure.get(i));
                     break;
                 case RANDOM:
                     g.setColor(Color.getHSBColor((float)Math.random(),0.7f,0.7f));
                     g.fill(boxStructure.get(i));
                     break;
-                case NONE:
-                    break;
-                default:
-                    g.setColor(colorMap.get(fileExtentions.get(i)));
+                case BY_FILE_AGE:
+                    setColorDegreeByAge();
+                    g.setColor(colorDegreeByAge.get(i));
                     g.fill(boxStructure.get(i));
+                case NONE:
                     break;
             }
             g.setColor(Color.LIGHT_GRAY);
@@ -107,8 +112,10 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
             boxStructure.add(new Rectangle2D.Double(left,top,width,height));
             fileExtentions.add(tn.getExtension());
             tooltipInfo.add(tn.getFile().toString() + " (Size: " + df.format(tn.getFileSize()/1024) + " kb)");
-            if(!colorMap.keySet().contains(tn.getExtension())) {
-                colorMap.put(tn.getExtension(), Color.getHSBColor((float)Math.random(), 0.7f, 0.7f));
+            if(!colorMapByExtension.keySet().contains(tn.getExtension()) && colorSchemeType == ColorSchemeType.BY_EXTENSION) {
+                colorMapByExtension.put(tn.getExtension(), Color.getHSBColor((float)Math.random(), 0.7f, 0.7f));
+            } else if (colorSchemeType == ColorSchemeType.BY_FILE_AGE) {
+                fileModifiedTimes.add(tn.getFile().lastModified());
             }
         } else {
             if (h_or_v) {
@@ -128,10 +135,29 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
 
     }
 
+    private void setColorDegreeByAge() {
+        double oldest = System.currentTimeMillis() - Collections.min(fileModifiedTimes);
+        for(long time : fileModifiedTimes) {
+            double interval = System.currentTimeMillis() - time;
+            if(interval/oldest < 0.2) {
+                colorDegreeByAge.add(Color.RED);
+            } else if(interval/oldest >= 0.2 && interval/oldest < 0.4) {
+                colorDegreeByAge.add(Color.YELLOW);
+            } else if(interval/oldest >= 0.4 && interval/oldest < 0.6) {
+                colorDegreeByAge.add(Color.GREEN);
+            } else if(interval/oldest >= 0.6 && interval/oldest < 0.8) {
+                colorDegreeByAge.add(Color.BLUE);
+            } else {
+                colorDegreeByAge.add(new Color(255,0,255));
+            }
+        }
+    }
+
     public void chooseAFile() {
         boxStructure.clear();
         fileExtentions.clear();
         tooltipInfo.clear();
+        colorDegreeByAge.clear();
         chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
         chooser.setDialogTitle("Choose a file");

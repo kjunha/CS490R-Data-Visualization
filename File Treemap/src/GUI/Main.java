@@ -28,20 +28,18 @@ public class Main extends JFrame {
         JMenu colorScheme = new JMenu("Color Scheme");
         JMenuItem byExtension = new JMenuItem("Extension");
         JMenuItem byFileAge = new JMenuItem("File Age");
-        JMenuItem byPermission = new JMenuItem("Permission");
         JMenuItem random = new JMenuItem("Random");
         JMenuItem none = new JMenuItem("None");
 
         open.addActionListener(e -> {contents.chooseAFile();});
         byExtension.addActionListener(e -> {contents.setColorSchemeType(ColorSchemeType.BY_EXTENSION);});
         byFileAge.addActionListener(e -> {contents.setColorSchemeType(ColorSchemeType.BY_FILE_AGE);});
-        byPermission.addActionListener(e -> {contents.setColorSchemeType(ColorSchemeType.BY_FILE_PERMISSION);});
         random.addActionListener(e -> {contents.setColorSchemeType(ColorSchemeType.RANDOM);});
         none.addActionListener(e -> {contents.setColorSchemeType(ColorSchemeType.NONE);});
 
         menuBar.add(file).add(open);
         menuBar.add(view).add(colorScheme);
-        colorScheme.add(byExtension); colorScheme.add(byFileAge); colorScheme.add(byPermission); colorScheme.add(random); colorScheme.add(none);
+        colorScheme.add(byExtension); colorScheme.add(byFileAge); colorScheme.add(random); colorScheme.add(none);
         return menuBar;
     }
 
