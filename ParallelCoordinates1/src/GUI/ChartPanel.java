@@ -25,12 +25,13 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
     private double top;
     private double bottom;
     private ArrayList<GeneralPath> graphs;
-    private int[] xPoints;
-    private double[] maxPolynomialYs;
+    private int[] xPoints; //Canvas x coordinate numbers of the bar
+    private double[] maxPolynomialYs; //min-max values of each column
     private double[] minPolynomialYs;
-    private ArrayList<ArrayList<String>> uniqueSetList;
+    private ArrayList<ArrayList<String>> uniqueSetList; //All unique string values for binomial data values
 
     //mouse listener related field
+    //TODO add mouse listener functions
 
     //tooltip related field
     private boolean showTooltip;
@@ -70,7 +71,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         drawAxis(g, w, h, dbManager.getKeySetCount());
         updateView();
         drawLabels(g);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.BLUE);
         for(GeneralPath gp : graphs) {
             g.draw(gp);
         }
@@ -100,7 +101,9 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
             GeneralPath gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xPoints.length);
             double[] yRatio = new double[dbManager.getKeySetCount()];
             int[] yPoints = new int[dbManager.getKeySetCount()];
+            //index counter for binomial(String) values.
             int binomialCounter = 0;
+            //(value-min) / (max-min) = ratio ->> ways to put min values at the bottom of the bar
             for(int j = 0; j < dbManager.getKeySetCount(); j++) {
                 if(dbManager.getDataType(j).toLowerCase().equals("double")) {
                     yRatio[j] = (((Double)dbManager.getEntity(i).get(dbManager.getKeySetValueIn(j))-minPolynomialYs[j])/(maxPolynomialYs[j]-minPolynomialYs[j]));
@@ -148,6 +151,11 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
     }
 
     //Public methods section
+
+    /**
+     * Update target table to display by user request.
+     * @param tableName a name of the table in the database
+     */
     public void updateTable(String tableName) {
         dbManager.loadTable(tableName);
         maxPolynomialYs = new double[dbManager.getKeySetCount()];
