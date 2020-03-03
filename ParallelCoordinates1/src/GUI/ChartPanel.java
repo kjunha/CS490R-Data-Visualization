@@ -7,12 +7,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ChartPanel extends JPanel implements MouseListener, MouseMotionListener {
@@ -53,7 +50,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         showTooltip = false;
         uniqueSetList = new ArrayList<>();
 
-        updateTable("marathon");
+        updateTable("roster2019");
         addMouseListener(this);
         addMouseMotionListener(this);
     }
@@ -94,7 +91,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
             xPoints[i] = (int)(left+(chartWidthResolution/(pts-1))*i);
             g.drawLine(xPoints[i], (int)top, xPoints[i], (int)bottom);
             String label = dbManager.getKeySetValueIn(i);
-            g.drawString(label, (int)((xPoints[i] - label.length()/2*8)), (int)bottom+25);
+            g.drawString(label, xPoints[i] - label.length()/2*8, (int)bottom+25);
         }
     }
     private void updateView() {
@@ -111,7 +108,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                     yRatio[j] = ((Double.parseDouble(Integer.toString((Integer)dbManager.getEntity(i).get(dbManager.getKeySetValueIn(j))))-minPolynomialYs[j])/(maxPolynomialYs[j]-minPolynomialYs[j]));
                 } else {
                     for(String item : uniqueSetList.get(binomialCounter)) {
-                        if(item.equals((String)dbManager.getEntity(i).get(dbManager.getKeySetValueIn(j)))) {
+                        if(item.equals(dbManager.getEntity(i).get(dbManager.getKeySetValueIn(j)))) {
                             yRatio[j] = ((double)(uniqueSetList.get(binomialCounter).indexOf(item)+1)/(uniqueSetList.get(binomialCounter).size()+1));
                         }
                     }
@@ -133,8 +130,12 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         for(int i = 0; i < dbManager.getKeySetCount(); i++) {
             if(dbManager.getDataType(i).toLowerCase().equals("double") || dbManager.getDataType(i).toLowerCase().contains("int")) {
                 for(int j = 0; j <= 5; j++) {
-                    String polynomialLabel = df.format(minPolynomialYs[i] + (maxPolynomialYs[i]/5)*j);
-                    g.drawString(polynomialLabel, xPoints[i] + 10, (int)(bottom - chartHeightResolution/5*j));
+                    double polynomialLabel = minPolynomialYs[i] + ((maxPolynomialYs[i]-minPolynomialYs[i])/5)*j;
+                    if(dbManager.getDataType(i).toLowerCase().equals("double")) {
+                        g.drawString(df.format(polynomialLabel), xPoints[i] + 10, (int)(bottom - chartHeightResolution/5*j));
+                    } else {
+                        g.drawString(Integer.toString((int)polynomialLabel), xPoints[i] + 10, (int)(bottom - chartHeightResolution/5*j));
+                    }
                 }
             } else {
                 for(int j = 0; j < uniqueSetList.get(binomialCounter).size(); j++) {
@@ -144,7 +145,6 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                 binomialCounter = (binomialCounter+1 < uniqueSetList.size())?binomialCounter+1:binomialCounter;
             }
         }
-
     }
 
     //Public methods section
@@ -165,6 +165,7 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                 maxPolynomialYs[i] = uniqueSet.size();
             }
         }
+        repaint();
     }
 
     //Mouse Listener Interface methods
