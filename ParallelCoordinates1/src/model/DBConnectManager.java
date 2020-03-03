@@ -20,7 +20,6 @@ public class DBConnectManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        loadTable("roster");
     }
 
     public static DBConnectManager getInstance() {

@@ -29,6 +29,9 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
     private double bottom;
     private ArrayList<GeneralPath> graphs;
     private int[] xPoints;
+    private double[] maxPolynomialYs;
+    private double[] minPolynomialYs;
+    private ArrayList<ArrayList<String>> uniqueSetList;
 
     //mouse listener related field
 
@@ -48,8 +51,9 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         ttm.setInitialDelay(0);
         ttm.setDismissDelay(10000);
         showTooltip = false;
+        uniqueSetList = new ArrayList<>();
 
-
+        updateTable("marathon");
         addMouseListener(this);
         addMouseMotionListener(this);
     }
@@ -68,6 +72,8 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         double w = getWidth();
         drawAxis(g, w, h, dbManager.getKeySetCount());
         updateView();
+        drawLabels(g);
+        g.setColor(Color.BLACK);
         for(GeneralPath gp : graphs) {
             g.draw(gp);
         }
@@ -91,25 +97,8 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
             g.drawString(label, (int)((xPoints[i] - label.length()/2*8)), (int)bottom+25);
         }
     }
-
     private void updateView() {
         graphs.clear();
-        double[] maxPolynomialYs = new double[xPoints.length];
-        double[] minPolynomialYs = new double[xPoints.length];
-        ArrayList<ArrayList<String>> uniqueSetList = new ArrayList<>();
-        for(int i = 0; i < dbManager.getKeySetCount(); i++) {
-            if(dbManager.getDataType(i).toLowerCase().equals("double")) {
-                minPolynomialYs[i] = Collections.min(dbManager.getValueList(i).stream().map(entity -> (Double)entity).collect(Collectors.toList()));
-                maxPolynomialYs[i] = Collections.max(dbManager.getValueList(i).stream().map(entity -> (Double)entity).collect(Collectors.toList()));
-            } else if(dbManager.getDataType(i).toLowerCase().contains("int")) {
-                minPolynomialYs[i] = Collections.min(dbManager.getValueList(i).stream().map(entity -> (Integer)entity).collect(Collectors.toList()));
-                maxPolynomialYs[i] = Collections.max(dbManager.getValueList(i).stream().map(entity -> (Integer)entity).collect(Collectors.toList()));
-            } else {
-                Set<String> uniqueSet = dbManager.getValueList(i).stream().map(entity -> (String) entity).collect(Collectors.toSet());
-                uniqueSetList.add(new ArrayList<>(uniqueSet));
-                maxPolynomialYs[i] = uniqueSet.size();
-            }
-        }
         for(int i = 0; i < dbManager.getEntityCount(); i++) {
             GeneralPath gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xPoints.length);
             double[] yRatio = new double[dbManager.getKeySetCount()];
@@ -120,7 +109,6 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                     yRatio[j] = (((Double)dbManager.getEntity(i).get(dbManager.getKeySetValueIn(j))-minPolynomialYs[j])/(maxPolynomialYs[j]-minPolynomialYs[j]));
                 } else if(dbManager.getDataType(j).toLowerCase().contains("int")) {
                     yRatio[j] = ((Double.parseDouble(Integer.toString((Integer)dbManager.getEntity(i).get(dbManager.getKeySetValueIn(j))))-minPolynomialYs[j])/(maxPolynomialYs[j]-minPolynomialYs[j]));
-                    System.out.println("Integer Ratio: " + maxPolynomialYs[j]);
                 } else {
                     for(String item : uniqueSetList.get(binomialCounter)) {
                         if(item.equals((String)dbManager.getEntity(i).get(dbManager.getKeySetValueIn(j)))) {
@@ -139,6 +127,47 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         }
     }
 
+    private void drawLabels(Graphics2D g) {
+        g.setColor(Color.RED);
+        int binomialCounter = 0;
+        for(int i = 0; i < dbManager.getKeySetCount(); i++) {
+            if(dbManager.getDataType(i).toLowerCase().equals("double") || dbManager.getDataType(i).toLowerCase().contains("int")) {
+                for(int j = 0; j <= 5; j++) {
+                    String polynomialLabel = df.format(minPolynomialYs[i] + (maxPolynomialYs[i]/5)*j);
+                    g.drawString(polynomialLabel, xPoints[i] + 10, (int)(bottom - chartHeightResolution/5*j));
+                }
+            } else {
+                for(int j = 0; j < uniqueSetList.get(binomialCounter).size(); j++) {
+                    String binomialLabel = uniqueSetList.get(binomialCounter).get(j);
+                    g.drawString(binomialLabel, xPoints[i] + 10, (int)(bottom - chartHeightResolution/(uniqueSetList.get(binomialCounter).size()+1)*(j+1)));
+                }
+                binomialCounter = (binomialCounter+1 < uniqueSetList.size())?binomialCounter+1:binomialCounter;
+            }
+        }
+
+    }
+
+    //Public methods section
+    public void updateTable(String tableName) {
+        dbManager.loadTable(tableName);
+        maxPolynomialYs = new double[dbManager.getKeySetCount()];
+        minPolynomialYs = new double[dbManager.getKeySetCount()];
+        for(int i = 0; i < dbManager.getKeySetCount(); i++) {
+            if(dbManager.getDataType(i).toLowerCase().equals("double")) {
+                minPolynomialYs[i] = Collections.min(dbManager.getValueList(i).stream().map(entity -> (Double)entity).collect(Collectors.toList()));
+                maxPolynomialYs[i] = Collections.max(dbManager.getValueList(i).stream().map(entity -> (Double)entity).collect(Collectors.toList()));
+            } else if(dbManager.getDataType(i).toLowerCase().contains("int")) {
+                minPolynomialYs[i] = Collections.min(dbManager.getValueList(i).stream().map(entity -> (Integer)entity).collect(Collectors.toList()));
+                maxPolynomialYs[i] = Collections.max(dbManager.getValueList(i).stream().map(entity -> (Integer)entity).collect(Collectors.toList()));
+            } else {
+                Set<String> uniqueSet = dbManager.getValueList(i).stream().map(entity -> (String) entity).collect(Collectors.toSet());
+                uniqueSetList.add(new ArrayList<>(uniqueSet));
+                maxPolynomialYs[i] = uniqueSet.size();
+            }
+        }
+    }
+
+    //Mouse Listener Interface methods
     @Override
     public void mouseMoved(MouseEvent e) { }
 
