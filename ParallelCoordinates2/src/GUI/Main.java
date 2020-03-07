@@ -25,17 +25,21 @@ public class Main extends JFrame {
         JMenuItem students_2012 = new JMenuItem("Student Roster - 2012");
         JMenuItem students_2019 = new JMenuItem("Student Roster - 2019");
         JMenuItem marathon = new JMenuItem("Marathon");
+        JMenu tools = new JMenu("Tools");
+        JMenuItem resetScope = new JMenuItem("Reset Scope");
 
         //menu action listener
         students_2012.addActionListener(e -> {contents.updateTable("roster");});
         students_2019.addActionListener(e -> {contents.updateTable("roster2019");});
         marathon.addActionListener(e -> {contents.updateTable("marathon");});
+        resetScope.addActionListener(e -> {contents.resetScope();});
 
 
         //menu bar buildup
         menuBar.add(tables).add(students_2012);
         tables.add(students_2019);
         tables.add(marathon);
+        menuBar.add(tools).add(resetScope);
         return menuBar;
     }
 

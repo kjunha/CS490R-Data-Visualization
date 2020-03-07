@@ -3,11 +3,11 @@ package GUI;
 import model.DBConnectManager;
 
 import javax.swing.*;
+import javax.xml.crypto.dsig.keyinfo.PGPData;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.GeneralPath;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,14 +24,23 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
     private double right;
     private double top;
     private double bottom;
-    private ArrayList<GeneralPath> graphs;
+    private ArrayList<ParallelGraph> graphs_total;
+    private ArrayList<ParallelGraph> graphs_selected;
+    private ArrayList<ParallelGraph> graphs_inScope;
+    private boolean scopeRenewRequested;
+    private ParallelGraph highlighted;
     private int[] xPoints; //Canvas x coordinate numbers of the bar
     private double[] maxPolynomialYs; //min-max values of each column
     private double[] minPolynomialYs;
     private ArrayList<ArrayList<String>> uniqueSetList; //All unique string values for binomial data values
 
+    //Drag Box
+    private boolean showBox;
+    private Point mouseDown;
+    private Point mouseUp;
+    private Rectangle selectionBox;
+
     //mouse listener related field
-    //TODO add mouse listener functions
 
     //tooltip related field
     private boolean showTooltip;
@@ -45,11 +54,17 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
     private ChartPanel() {
         dbManager = DBConnectManager.getInstance();
         ttm = ToolTipManager.sharedInstance();
-        graphs = new ArrayList<>();
+        graphs_total = new ArrayList<>();
+        graphs_selected = new ArrayList<>();
+        graphs_inScope = new ArrayList<>();
+        highlighted = null;
         ttm.setInitialDelay(0);
         ttm.setDismissDelay(10000);
         showTooltip = false;
         uniqueSetList = new ArrayList<>();
+        selectionBox = new Rectangle();
+        showBox = false;
+        scopeRenewRequested = true;
 
         updateTable("roster2019");
         addMouseListener(this);
@@ -72,8 +87,25 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         updateView();
         drawLabels(g);
         g.setColor(Color.BLUE);
-        for(GeneralPath gp : graphs) {
-            g.draw(gp);
+        g.setStroke(new BasicStroke());
+        for(ParallelGraph pg : graphs_inScope) {
+            g.draw(pg.getPolyLine());
+        }
+        if(highlighted != null) {
+            g.setColor(Color.RED);
+            g.setStroke(new BasicStroke(1.5f));
+            g.draw(highlighted.getPolyLine());
+        }
+        for(ParallelGraph pg : graphs_selected) {
+            g.setColor(Color.CYAN);
+            g.setStroke(new BasicStroke(1.3f));
+            g.draw(pg.getPolyLine());
+        }
+        if(showBox) {
+            g.setColor(new Color(139, 176, 194, 70));
+            g.fill(selectionBox);
+            g.setColor(Color.WHITE);
+            g.draw(selectionBox);
         }
     }
 
@@ -96,9 +128,8 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         }
     }
     private void updateView() {
-        graphs.clear();
+        graphs_total.clear();
         for(int i = 0; i < dbManager.getEntityCount(); i++) {
-            GeneralPath gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xPoints.length);
             double[] yRatio = new double[dbManager.getKeySetCount()];
             int[] yPoints = new int[dbManager.getKeySetCount()];
             //index counter for binomial(String) values.
@@ -119,11 +150,17 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                 }
                 yPoints[j] = (int)(bottom-yRatio[j]*chartHeightResolution);
             }
-            gp.moveTo(xPoints[0], yPoints[0]);
-            for(int j = 1; j < xPoints.length; j++) {
-                gp.lineTo(xPoints[j], yPoints[j]);
+            int id = graphs_total.size();
+            graphs_total.add(new ParallelGraph(xPoints, yPoints, id));
+        }
+        if(scopeRenewRequested) {
+            graphs_inScope.clear();
+            graphs_inScope.addAll(graphs_total);
+            scopeRenewRequested = false;
+        } else {
+            for(ParallelGraph pg : graphs_inScope) {
+                graphs_inScope.set(graphs_inScope.indexOf(pg),graphs_total.get(graphs_total.indexOf(pg)));
             }
-            graphs.add(gp);
         }
     }
 
@@ -173,19 +210,62 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
                 maxPolynomialYs[i] = uniqueSet.size();
             }
         }
+        resetScope();
+        repaint();
+    }
+
+    public void resetScope() {
+        scopeRenewRequested = true;
         repaint();
     }
 
     //Mouse Listener Interface methods
     @Override
-    public void mouseMoved(MouseEvent e) { }
+    public void mouseMoved(MouseEvent e) {
+        for(ParallelGraph pg : graphs_inScope) {
+            if(pg.onLine(e.getPoint())) {
+                highlighted = pg;
+                break;
+            }
+        }
+        if(highlighted != null && !highlighted.onLine(e.getPoint())) {
+            highlighted = null;
+        }
+        repaint();
+    }
 
     @Override
-    public void mousePressed(MouseEvent e) { }
+    public void mousePressed(MouseEvent e) {
+        mouseDown = e.getPoint();
+        showBox = true;
+    }
+
     @Override
-    public void mouseReleased(MouseEvent e) { }
+    public void mouseDragged(MouseEvent e) {
+        mouseUp = e.getPoint();
+        selectionBox.setFrameFromDiagonal(mouseDown, mouseUp);
+        for(ParallelGraph pg:graphs_inScope) {
+            if(graphs_selected.indexOf(pg) == -1 && pg.isContainedIn(selectionBox)){
+                graphs_selected.add(pg);
+            } else if(graphs_selected.indexOf(pg) != -1 && !pg.isContainedIn(selectionBox)) {
+                    graphs_selected.remove(graphs_selected.indexOf(pg));
+
+            }
+        }
+        repaint();
+    }
+
     @Override
-    public void mouseDragged(MouseEvent e) { }
+    public void mouseReleased(MouseEvent e) {
+        showBox = false;
+        if(graphs_selected.size() > 0) {
+            graphs_inScope.clear();
+            graphs_inScope.addAll(graphs_selected);
+        }
+        graphs_selected.clear();
+        repaint();
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) { }
     @Override
