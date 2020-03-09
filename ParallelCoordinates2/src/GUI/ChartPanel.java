@@ -86,10 +86,15 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         drawAxis(g, w, h, dbManager.getKeySetCount());
         updateView();
         drawLabels(g);
-        g.setColor(Color.BLUE);
         g.setStroke(new BasicStroke());
-        for(ParallelGraph pg : graphs_inScope) {
-            g.draw(pg.getPolyLine());
+        for(ParallelGraph pg : graphs_total) {
+            if(graphs_inScope.indexOf(pg) == -1) {
+                g.setColor(new Color(120,120,255, 20));
+                g.draw(pg.getPolyLine());
+            } else {
+                g.setColor(Color.BLUE);
+                g.draw(pg.getPolyLine());
+            }
         }
         if(highlighted != null) {
             g.setColor(Color.RED);
@@ -187,6 +192,18 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         }
     }
 
+    private String buildToolTipText(int index) {
+        String tooltipText = "";
+        for(int j = 0; j < dbManager.getKeySetCount(); j++) {
+            String key = dbManager.getKeySetValueIn(j);
+            tooltipText = tooltipText + key + ": " + dbManager.getEntity(index).get(key);
+            if(j < dbManager.getKeySetCount() - 1) {
+                tooltipText += ", ";
+            }
+        }
+        return tooltipText;
+    }
+
     //Public methods section
 
     /**
@@ -225,11 +242,13 @@ public class ChartPanel extends JPanel implements MouseListener, MouseMotionList
         for(ParallelGraph pg : graphs_inScope) {
             if(pg.onLine(e.getPoint())) {
                 highlighted = pg;
+                setToolTipText(buildToolTipText(graphs_total.indexOf(pg)));
                 break;
             }
         }
         if(highlighted != null && !highlighted.onLine(e.getPoint())) {
             highlighted = null;
+            setToolTipText(null);
         }
         repaint();
     }
