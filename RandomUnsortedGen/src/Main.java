@@ -13,6 +13,10 @@ public class Main {
             int selection = Integer.parseInt(args[0]);
             int min = Integer.parseInt(args[1]);
             int max = Integer.parseInt(args[2]);
+            if(selection > (max-min)) {
+                System.out.println("The number of unique number between max and min number should be greater then the number that you want to select.");
+                System.exit(0);
+            }
             List<Integer> uniqueSelection = new ArrayList<>();
             while(uniqueSelection.size() < selection) {
                 int rndSelection = (int)((Math.random() * (max-min)) + min);
