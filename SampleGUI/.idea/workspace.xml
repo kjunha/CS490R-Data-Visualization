@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5942e040-01c5-4021-8b9c-fc788cd4291f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../File Treemap/src/model/TreeMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/../File Treemap/src/model/TreeMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SQLFun/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SQLFun/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../DynamicQueryInterface/src/gui/DetailTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../DynamicQueryInterface/src/helper/TableStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/gui/DetailChart.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/gui/DetailChart.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/gui/IndexBoard.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/gui/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/gui/Main$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/gui/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/gui/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/helper/CalenderToolBar.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DynamicQueryInterface/out/production/DynamicQueryInterface/helper/CalenderToolBar.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/src/gui/DetailChart.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DynamicQueryInterface/src/gui/DetailChart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/src/gui/IndexBoard.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/src/gui/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DynamicQueryInterface/src/gui/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DynamicQueryInterface/src/helper/CalenderToolBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DynamicQueryInterface/src/helper/CalenderToolBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

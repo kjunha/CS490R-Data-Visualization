@@ -1,6 +1,7 @@
 package helper;
 
 import gui.DetailChart;
+import gui.DetailTable;
 import gui.OverallChart;
 import model.WebAPIManager;
 
@@ -68,6 +69,7 @@ public class CalenderToolBar extends JToolBar {
                 webAPIManager.expendDataSet(fromDate);
                 DetailChart.getInstance().resetView();
                 OverallChart.getInstance().repaint();
+                DetailTable.getInstance().updateData();
             }
         });
 
@@ -86,6 +88,7 @@ public class CalenderToolBar extends JToolBar {
                 toDate = LocalDate.parse(sdf.format(spinnerDate));
                 DetailChart.getInstance().resetView();
                 OverallChart.getInstance().repaint();
+                DetailTable.getInstance().updateData();
             }
         });
 

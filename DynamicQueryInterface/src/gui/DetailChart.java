@@ -145,7 +145,7 @@ public class DetailChart extends JPanel {
         String[] byDates = webAPIManager.getDates(calenderToolBar.getFromDate(), calenderToolBar.getToDate());
         double min = Collections.min(dataset);
         double max = Collections.max(dataset);
-        double gap = w/dataset.size();
+        double gap = w/byDates.length;
         for(int i = 0; i < byDates.length; i++) {
             Double v = dataset.get(webAPIManager.getIndexOfDates(byDates[byDates.length - 1 - i]));
             var v1 = (v - min) / (max - min) * h;

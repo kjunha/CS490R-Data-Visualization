@@ -2,6 +2,7 @@ package gui;
 
 import helper.CalenderToolBar;
 import helper.DetailViewMode;
+import helper.TableStructure;
 import model.WebAPIManager;
 import org.json.JSONException;
 
@@ -39,7 +40,7 @@ public class Main extends JFrame {
         c.gridy = 1;
         c.gridheight = 2;
         c.weightx = 0.7;
-        add(IndexBoard.getInstance(), c);
+        add(DetailTable.getInstance(), c);
         setSize(800,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Simple GUI by Dexter");
